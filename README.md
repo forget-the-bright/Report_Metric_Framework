@@ -49,8 +49,7 @@
 
 在 `application.yml` 中配置多数据源：
 
-```
-yaml
+```yaml
 spring:
   datasource:
     dynamic:
@@ -92,8 +91,7 @@ logging:
 
 使用 `@ReportMetric` 标注类，声明为指标提供者：
 
-```
-java
+```java
 package com.example.report.metric;
 
 import io.github.forget_the_bright.rmetric.annotation.ReportMetric;
@@ -122,8 +120,7 @@ public class ResidualPoleOpMetric {
 
 框架自动生成并执行 SQL，性能最优：
 
-```
-java
+```java
 @ReportMetricOperation(
     code = "D001",
     name = "1#残极洗涤破碎机组总加工数",
@@ -148,8 +145,7 @@ public List<ReportMetricData> getOneTotalProcessingNumber(String startTime, Stri
 
 适用于复杂业务逻辑：
 
-```
-java
+```java
 @ReportMetricOperation(
     code = "D002",
     name = "1#残极机组合格率",
@@ -171,8 +167,7 @@ public List<ReportMetricData> getQualificationRate(String startTime, String endT
 
 #### REST API 调用
 
-```
-bash
+```bash
 # 查询单个指标
 GET http://localhost:8080/queryReportMetricData?codes=D001&date1=2026-04-01&date2=2026-04-30
 
@@ -181,8 +176,7 @@ GET http://localhost:8080/queryReportMetricData?codes=D001;D002;D003&date1=2026-
 ```
 #### Java 代码调用
 
-```
-java
+```java
 @Autowired
 private ReportMetricExecutor reportMetricExecutor;
 
@@ -209,8 +203,7 @@ Map<String, ReportMetricResult> results = reportMetricExecutor.getValueByTimeInt
 | `dataSource` | 否 | "" | 指定数据源名称，为空则使用默认数据源 |
 
 **示例：**
-```
-java
+```java
 @ReportMetric(
     reportName = "电解槽温度记录表",
     workShop = "电解一车间",
@@ -253,8 +246,7 @@ java
 | `dataSource`（类级别） | **低** | 类级别的作为默认值 |
 
 **示例：**
-```
-java
+```java
 @ReportMetric(
     reportName = "跨库查询示例",
     workShop = "测试车间",
@@ -290,8 +282,7 @@ public class CrossDataSourceMetric {
 
 当多个指标使用**同一张表**且**相同过滤条件**时，框架会自动将它们合并为一条 `SELECT` 语句执行：
 
-```
-java
+```java
 // 指标 D001
 @ReportMetricOperation(
     code = "D001",
@@ -311,8 +302,7 @@ java
 )
 ```
 **生成的 SQL：**
-```
-sql
+```sql
 SELECT 
     op_date,
     output_value AS D001,
@@ -335,23 +325,24 @@ WHERE line = 'A'
 请求 → L1: 本地锁控制 → L2: Redis 缓存 → L3: 数据库查询
 ```
 **缓存配置：**
-```
-java
+```java
 @ReportMetricOperation(
     code = "D001",
     cacheTime = 300  // 自定义缓存 5 分钟
 )
 ```
 **缓存键格式：**
-```
 
+```
 Base:ReportMetric:{code}_{startTimeMillis}_{endTimeMillis}
 ```
-**缓存优先级：**
-```
 
+**缓存优先级：**
+
+```
 传入 expireSeconds > 注解 cacheTime > 默认值 60s
 ```
+
 ### 3. 并发锁控制
 
 框架内部已处理并发锁，开发者无需额外加锁：
@@ -364,8 +355,7 @@ Base:ReportMetric:{code}_{startTimeMillis}_{endTimeMillis}
 
 支持在不重启应用的情况下重新加载指标配置：
 
-```
-bash
+```bash
 GET http://localhost:8080/refreshReportMetric
 ```
 **适用场景：**
@@ -378,8 +368,7 @@ GET http://localhost:8080/refreshReportMetric
 
 框架提供完整的 RESTful API，所有接口返回统一格式：
 
-```
-json
+```json
 {
   "success": true,
   "message": "",
@@ -398,13 +387,11 @@ json
 - `date2`: 结束时间，格式 `yyyy-MM-dd HH:mm:ss`（选填）
 
 **示例：**
-```
-bash
+```bash
 GET /queryReportMetricData?codes=D001;D002&date1=2026-04-01 00:00:00&date2=2026-04-30 23:59:59
 ```
 **返回：**
-```
-json
+```json
 {
   "success": true,
   "code": 200,
@@ -467,8 +454,7 @@ json
 **用途：** 查看框架生成的 SQL 语句，便于调试
 
 **返回：**
-```
-json
+```json
 {
   "D001": {
     "sql": "SELECT op_date, total_processing_number FROM mes_residual_pole_op_record WHERE machine_number = '1#' AND op_date BETWEEN ? AND ?",
@@ -525,8 +511,7 @@ public List<ReportMetricData> queryMethod(String startTime, String endTime)
 | `dbFilterColumn` + `dbFilterColumnValue` | 要么都填，要么都不填 |
 
 **错误示例：**
-```
-java
+```java
 @ReportMetricOperation(
 code = "D001",
 dbTableName = "test_table",
@@ -555,8 +540,7 @@ dbTableTimeColumn = "op_date"
 **原因：** 方法返回值不是 `List<ReportMetricData>`
 
 **解决：**
-```
-java
+```java
 // ❌ 错误
 public List<Map<String, Object>> queryMethod(...)
 
@@ -604,8 +588,7 @@ return ReportMetricData.convertMaps(dataList, "date", "value");
 **错误信息：** `dynamic-datasource can not find primary datasource`
 
 **解决：**
-```
-yaml
+```yaml
 spring:
 datasource:
 dynamic:
@@ -628,8 +611,7 @@ master:
 
 对于简单的单表统计，尽量使用 `dbTableName` 等属性：
 
-```
-java
+```java
 // ✅ 推荐：让框架处理 SQL 合并，性能更优
 @ReportMetricOperation(
 code = "D001",
@@ -648,8 +630,7 @@ return mapper.selectList(...);
 
 如果需要跨表联查或复杂的 Java 计算，请保持 `dbTableName` 为空：
 
-```
-java
+```java
 @ReportMetricOperation(
 code = "D099",
 name = "综合效率指标"
@@ -668,8 +649,7 @@ List<Data2> data2 = mapper2.query(startTime, endTime);
 
 根据数据更新频率设置缓存：
 
-```
-java
+```java
 // 实时数据：短缓存或不缓存
 @ReportMetricOperation(code = "D001", cacheTime = 30)  // 30秒
 
@@ -696,8 +676,7 @@ java
 
 数据库返回的 `null` 会被框架转为字符串 `"null"`，前端展示时需做判断：
 
-```
-javascript
+```javascript
 // 前端处理
 if (item.value === 'null' || item.value === null) {
 return '-';
@@ -708,16 +687,14 @@ return item.value;
 
 开发阶段多使用 `/previewReportMetricQuery` 接口查看生成的 SQL：
 
-```
-bash
+```bash
 GET /previewReportMetricQuery?codes=D001&date1=2026-04-01&date2=2026-04-30
 ```
 ### 7. 线程安全
 
 框架内部已处理并发锁，**开发者无需在指标方法内额外加锁**：
 
-```
-java
+```java
 // ❌ 不需要
 @ReportMetricOperation(code = "D001")
 public synchronized List<ReportMetricData> queryMethod(...) {
@@ -735,55 +712,53 @@ public List<ReportMetricData> queryMethod(...) {
 
 ### 成功响应
 
-```
-json
+```json
 {
 "success": true,
 "message": "",
 "code": 200,
 "result": {
-"D001": {
-"code": "D001",
-"name": "1#残极洗涤破碎机组总加工数",
-"sourceReport": "残极洗涤破碎机组作业记录表",
-"workShop": "电解车间",
-"valueType": "累计值",
-"valueSource": "报表填报",
-"unit": "块",
-"granularity": "天",
-"chartType": "散点图",
-"status": "Success",
-"message": "查询成功",
-"data": [
-{
-"date": "2026-04-23",
-"value": "734"
-},
-{
-"date": "2026-04-24",
-"value": "456"
-}
-]
-}
+  "D001": {
+    "code": "D001",
+    "name": "1#残极洗涤破碎机组总加工数",
+    "sourceReport": "残极洗涤破碎机组作业记录表",
+    "workShop": "电解车间",
+    "valueType": "累计值",
+    "valueSource": "报表填报",
+    "unit": "块",
+    "granularity": "天",
+    "chartType": "散点图",
+    "status": "Success",
+    "message": "查询成功",
+    "data": [
+        {
+        "date": "2026-04-23",
+        "value": "734"
+        },
+        {
+        "date": "2026-04-24",
+        "value": "456"
+        }
+    ]
+  }
 },
 "timestamp": 1717200000000
 }
 ```
 ### 失败响应
 
-```
-json
+```json
 {
 "success": false,
 "message": "指标 D999 未找到配置",
 "code": 500,
 "result": {
-"D999": {
-"code": "D999",
-"status": "Undefined",
-"message": "指标编码未注册",
-"data": []
-}
+    "D999": {
+        "code": "D999",
+        "status": "Undefined",
+        "message": "指标编码未注册",
+        "data": []
+    }
 },
 "timestamp": 1717200000000
 }
@@ -796,8 +771,7 @@ json
 
 如果需要自定义缓存策略，可以注入 `MetricCacheManager`：
 
-```
-java
+```java
 @Autowired
 private MetricCacheManager cacheManager;
 
@@ -816,16 +790,14 @@ cacheManager.batchSet(resultMap, date1, date2, 600);  // 10分钟
 - `metric.query.duration`: 查询耗时
 
 可通过 Actuator 端点查看：
-```
-bash
+```bash
 GET /actuator/metrics/metric.cache.hit
 ```
 ### 日志配置
 
 开发环境建议开启 DEBUG 日志：
 
-```
-yaml
+```yaml
 logging:
 level:
 io.github.forget_the_bright.rmetric: DEBUG
