@@ -24,41 +24,49 @@ import java.lang.annotation.Target;
 public @interface ReportMetricOperation {
     /**
      * 指标编码(唯一标识)
+     * @return 指标编码
      */
     String code();
 
     /**
      * 指标名称
+     * @return 指标名称
      */
     String name();
 
     /**
      * 车间名称
+     * @return 车间名称
      */
     String workShop() default "";
 
     /**
      * 值类型
+     * @return 值类型
      */
     ReportMetricValueType valueType();
 
     /**
      * 值来源类型
+     * @return 值来源类型
      */
     ReportMetricSourceType valueSource() default ReportMetricSourceType.REPORT;
 
     /**
      * 指标单位(可选)
+     * @return 指标单位
      */
     String unit() default "";
 
     /**
      * 时间粒度(天、小时等)
+     * @return 时间粒度
      */
     ReportMetricGranularity granularity();
 
     /**
      * 图表类型
+     * @return 图表类型
      */
     ReportMetricChartType chartType() default ReportMetricChartType.SCATTER;
 

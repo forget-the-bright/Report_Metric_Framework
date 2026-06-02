@@ -1,14 +1,10 @@
 package io.github.forget_the_bright.rmetric;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
-import io.github.forget_the_bright.rmetric.ReportMetricExecutor;
-import io.github.forget_the_bright.rmetric.ReportMetricMonitor;
-import io.github.forget_the_bright.rmetric.ReportMetricRegistry;
 import io.github.forget_the_bright.rmetric.cache.MetricCacheManager;
 import io.github.forget_the_bright.rmetric.cache.MetricLockManager;
 import io.github.forget_the_bright.rmetric.common.MetricDataManager;
 import io.github.forget_the_bright.rmetric.common.MetricThreadManager;
-import io.github.forget_the_bright.rmetric.controller.ReportMetricController;
 import io.github.forget_the_bright.rmetric.strategy.MethodQueryStrategy;
 import io.github.forget_the_bright.rmetric.strategy.QueryStrategy;
 import io.github.forget_the_bright.rmetric.strategy.SqlQueryStrategy;
@@ -118,6 +114,7 @@ public class ReportMetricAutoConfiguration {
     /**
      * 指标监控器
      *
+     * @param meterRegistry Micrometer 指标注册表
      * @return ReportMetricMonitor 实例
      */
     @Bean
@@ -166,9 +163,9 @@ public class ReportMetricAutoConfiguration {
     }
 
     /**
-     * RedisTemplate<String, Object> 配置
+     * RedisTemplate&lt;String, Object&gt; 配置
      *
-     * <p>当容器中不存在 RedisTemplate<String, Object> 类型的 Bean 时，自动创建。</p>
+     * <p>当容器中不存在 RedisTemplate&lt;String, Object&gt; 类型的 Bean 时，自动创建。</p>
      * <p>Key 使用 String 序列化，Value 使用 JSON 序列化，支持存储复杂对象（如 ReportMetricResult）。</p>
      *
      * @param connectionFactory Redis 连接工厂（由 Spring Boot 自动配置提供）

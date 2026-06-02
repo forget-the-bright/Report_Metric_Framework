@@ -258,9 +258,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:https://github.com/forget-the-bright/GE_REST_SDK.git</connection>
-        <developerConnection>scm:git:https://github.com/forget-the-bright/GE_REST_SDK.git</developerConnection>
-        <url>https://github.com/forget-the-bright/GE_REST_SDK.git</url>
+        <connection>scm:git:https://github.com/forget-the-bright/Report_Metric_Framework.git</connection>
+        <developerConnection>scm:git:https://github.com/forget-the-bright/Report_Metric_Framework.git</developerConnection>
+        <url>https://github.com/forget-the-bright/Report_Metric_Framework.git</url>
     </scm>
 
     <distributionManagement>

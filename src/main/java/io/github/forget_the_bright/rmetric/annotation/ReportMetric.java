@@ -20,11 +20,13 @@ import java.lang.annotation.*;
 public @interface ReportMetric {
     /**
      * 报表名称
+     * @return 报表名称
      */
     String reportName();
 
     /**
      * 车间名称
+     * @return 车间名称
      */
     String workShop();
 

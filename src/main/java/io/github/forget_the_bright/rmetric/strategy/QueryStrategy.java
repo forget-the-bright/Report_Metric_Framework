@@ -17,6 +17,8 @@ public interface QueryStrategy {
 
     /**
      * 判断是否支持该配置
+     * @param config 指标配置
+     * @return true=支持，false=不支持
      */
     boolean supports(ReportMetricConfig config);
 

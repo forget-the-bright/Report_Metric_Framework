@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  *   <li><b>缓存键构建</b>：统一生成包含指标编码和时间戳的 Redis Key</li>
  *   <li><b>批量缓存读取</b>：使用 MGET 优化批量查询性能，减少网络往返</li>
  *   <li><b>批量缓存写入</b>：使用 Pipeline + SETEX 原子操作，确保过期时间设置安全</li>
- *   <li><b>多级过期策略</b>：支持传入值 > 配置值 > 默认值（60秒）的优先级机制</li>
+ *   <li><b>多级过期策略</b>：支持传入值 &gt; 配置值 &gt; 默认值（60秒）的优先级机制</li>
  * </ul>
  *
  * @author wanghao(helloworlwh@163.com)
@@ -127,7 +127,7 @@ public class MetricCacheManager {
      * @param configs 指标配置列表
      * @param date1   开始时间
      * @param date2   结束时间
-     * @return Tuple<命中缓存的结果Map, 未命中缓存的配置List>
+     * @return Tuple&lt;命中缓存的结果Map, 未命中缓存的配置List&gt;
      */
     public Tuple<Map<String, ReportMetricResult>, List<ReportMetricConfig>> batchGetByConfigs(List<ReportMetricConfig> configs, Date date1, Date date2) {
         /* 空列表快速返回 */
@@ -156,7 +156,7 @@ public class MetricCacheManager {
      * @param codes 指标编码列表
      * @param date1 开始时间
      * @param date2 结束时间
-     * @return Tuple<命中缓存的结果Map, 未命中缓存的编码List>
+     * @return Tuple&lt;命中缓存的结果Map, 未命中缓存的编码List&gt;
      */
     public Tuple<Map<String, ReportMetricResult>, List<String>> batchGetByCodes(List<String> codes, Date date1, Date date2) {
         /* 空列表快速返回 */
@@ -220,7 +220,7 @@ public class MetricCacheManager {
      * <ul>
      *   <li><b>Pipeline 批量执行</b>：减少网络往返次数，提升写入性能</li>
      *   <li><b>SETEX 原子操作</b>：避免先 SET 后 EXPIRE 可能导致的永久 Key 问题</li>
-     *   <li><b>多级过期策略</b>：expireSeconds > config.cacheTime > 默认值 60s</li>
+     *   <li><b>多级过期策略</b>：expireSeconds &gt; config.cacheTime &gt; 默认值 60s</li>
      * </ul>
      *
      * @param resultMap     指标结果映射（Key: Code, Value: ReportMetricResult）

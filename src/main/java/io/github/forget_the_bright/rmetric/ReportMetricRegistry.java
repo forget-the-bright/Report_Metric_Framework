@@ -38,6 +38,7 @@ public class ReportMetricRegistry {
      * 构造函数 - 扫描并注册所有指标
      *
      * @param applicationContext Spring应用上下文
+     * @param metricDataManager 指标数据管理器
      */
     @Autowired
     public ReportMetricRegistry(ApplicationContext applicationContext, MetricDataManager metricDataManager) {

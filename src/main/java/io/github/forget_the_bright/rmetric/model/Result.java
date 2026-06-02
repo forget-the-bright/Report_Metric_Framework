@@ -54,8 +54,8 @@ public class Result<T> implements Serializable {
 
     /**
      * 兼容VUE3版token失效不跳转登录页面
-     * @param code
-     * @param message
+     * @param code 返回代码
+     * @param message 返回消息
      */
     public Result(Integer code, String message) {
         this.code = code;
@@ -104,9 +104,9 @@ public class Result<T> implements Serializable {
     /**
      * 此方法是为了兼容升级所创建
      *
-     * @param msg
-     * @param <T>
-     * @return
+     * @param msg 返回消息
+     * @param <T> 泛型类型
+     * @return 返回结果对象
      */
     public static<T> Result<T> OK(String msg) {
         Result<T> r = new Result<T>();
