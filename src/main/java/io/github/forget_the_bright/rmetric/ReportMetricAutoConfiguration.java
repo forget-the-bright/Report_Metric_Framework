@@ -18,6 +18,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
@@ -43,6 +44,17 @@ import javax.sql.DataSource;
 @Configuration
 @ConditionalOnClass({DataSource.class, DynamicRoutingDataSource.class})
 public class ReportMetricAutoConfiguration {
+
+    /**
+     * 指标执行提供者（弃用）
+     *
+     * @return ReportMetricInvokeHandler 实例
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public ReportMetricInvokeHandler reportMetricInvokeHandler() {
+        return new ReportMetricInvokeHandler();
+    }
 
     /**
      * 指标数据管理器
