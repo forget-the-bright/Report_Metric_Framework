@@ -1,0 +1,3 @@
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+      io.github.forget_the_bright.rmetric.ReportMetricAutoConfiguration

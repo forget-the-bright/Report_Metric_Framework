@@ -1,0 +1,57 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: report-metric-test
+  
+  datasource:
+    druid:
+      stat-view-servlet:
+        enabled: true
+        loginUsername: admin
+        loginPassword: 123456
+        allow:
+      web-stat-filter:
+        enabled: true
+    dynamic:
+      druid:
+        initial-size: 5
+        min-idle: 5
+        maxActive: 1000
+        maxWait: 60000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        filters: stat,wall,slf4j
+        wall:
+          selectWhereAlwayTrueCheck: false
+        stat:
+          merge-sql: true
+          slow-sql-millis: 5000
+      datasource:
+        master:
+          url: jdbc:mysql://10.10.2.39:3306/tongling-business?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+          username: root
+          password: yx@znjc311
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        prod:
+          url: jdbc:mysql://172.16.176.4:3306/tongling-business?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: yx@znjc311
+          driver-class-name: com.mysql.cj.jdbc.Driver
+  #redis 配置
+  redis:
+    database: 4
+    host: 10.10.2.39
+    port: 6379
+    password: ''
+logging:
+  level:
+    io.github.forget_the_bright.rmetric: DEBUG
+    com.baomidou.dynamic.datasource: DEBUG
